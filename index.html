@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday AVANTIKA💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Password Lock Overlay -->
+    <div id="passwordOverlay" class="password-overlay">
+        <div class="password-card" id="passwordCard">
+            <div class="lock-icon">🔒💕</div>
+            <h2 class="lock-title">A Special Surprise For You</h2>
+            <p class="lock-subtitle">Enter the secret code to open your birthday surprise ✨</p>
+            <form id="passwordForm" class="lock-form">
+                <input type="text" id="passwordInput" class="lock-input" placeholder="Enter Birthdate" autocomplete="off" autofocus required>
+                <button type="submit" class="lock-btn">Unlock My Surprise 🎁</button>
+            </form>
+            <div id="passwordFeedback" class="lock-feedback"></div>
+            <p class="lock-hint">💡 <em>Hint: Your birthdate (DDMMYY) 🎂</em></p>
+        </div>
+    </div>
+
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">💕</div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="wishes.html">Wishes</a></li>
+            <li><a href="reasons.html">Why I Love You</a></li>
+            <li><a href="gallery.html">Memories</a></li>
+            <li><a href="letter.html">Love Letter</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- ===== HOME SECTION ===== -->
+    <section id="home" class="section home-section">
+        <div class="sparkle-overlay"></div>
+        <div class="home-content">
+            <div class="birthday-badge">🎂 It's Your Special Day 🎂</div>
+            <h1 class="main-title">
+                <span class="title-line">Happy</span>
+                <span class="title-line highlight">Birthday</span>
+                <span class="title-line name-highlight">Avantika</span>
+            </h1>
+            <p class="subtitle">Today isn’t just your birthday, Avantika — it’s the day my favorite person came into this world. 💖</p>
+            <div class="cake-emoji">🎂</div>
+            <a href="wishes.html" class="cta-button">
+                <span>Open Your Surprise</span>
+                <span class="btn-sparkle">✨</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-hearts">💕💖💕</div>
+            <p class="footer-message">Made with endless love, just for you</p>
+            <p class="footer-sub">Happy Birthday, Cutieee!! 😚🎂</p>
+            <div class="footer-stars">⭐ You're my favorite person ⭐</div>
+        </div>
+    </footer>
+
+    <!-- Birthday Confetti Canvas -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>

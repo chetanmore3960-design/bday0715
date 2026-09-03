@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Letter 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">💕</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="wishes.html">Wishes</a></li>
+            <li><a href="reasons.html">Why I Love You</a></li>
+            <li><a href="gallery.html">Memories</a></li>
+            <li><a href="letter.html" class="active">Love Letter</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- ===== LOVE LETTER SECTION ===== -->
+    <section id="letter" class="section letter-section">
+        <div class="section-header">
+            <span class="section-emoji">💌</span>
+            <h2>My Heart To Yours</h2>
+            <p class="section-subtitle">Click the envelope below to open your letter</p>
+        </div>
+
+        <div class="letter-container">
+            <div class="envelope" id="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-body">
+                    <p>Click to open 💌</p>
+                </div>
+            </div>
+            <div class="letter-content" id="letterContent">
+                <div class="letter-paper">
+                    <div class="letter-date">On Your Special Day</div>
+                    <h2 class="letter-greeting">My Cute Cute Kuchuu 💋,</h2>
+                    <div class="letter-body">
+                        <p>On this beautiful day, I want you to know that you are the most amazing person I've ever met. Every day with you feels like a gift, and I thank the stars for bringing you into my life.</p>
+                        <p>You make ordinary moments extraordinary. Your presence turns even the simplest days into something magical. I fall in love with you a little more each day, and I didn't even know that was possible.</p>
+                        <p>Today, on your birthday, I want you to feel all the love that you give so freely to everyone around you. You deserve the world and more, and I promise to spend every day trying to give it to you.</p>
+                        <p>Happy Birthday, my love. Here's to another year of laughter, adventures, and endless love. You are my today, my tomorrow, and my forever.</p>
+                    </div>
+                    <div class="letter-signature">
+                        <p>With all my love,</p>
+                        <p class="signature">Forever Yours Puchuu 💕</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Navigation Buttons -->
+        <div class="page-navigation">
+            <a href="gallery.html" class="page-nav-btn secondary">← Previous: Memories</a>
+            <a href="index.html" class="page-nav-btn primary">Back to Start 🏠 💕</a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-hearts">💕💖💕</div>
+            <p class="footer-message">Made with endless love, just for you</p>
+            <p class="footer-sub">Happy Birthday, Cutieee!! 😚🎂</p>
+            <div class="footer-stars">⭐ You're my favorite person ⭐</div>
+        </div>
+    </footer>
+
+    <!-- Birthday Confetti Canvas -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>

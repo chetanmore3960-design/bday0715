@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Memories 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">💕</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="wishes.html">Wishes</a></li>
+            <li><a href="reasons.html">Why I Love You</a></li>
+            <li><a href="gallery.html" class="active">Memories</a></li>
+            <li><a href="letter.html">Love Letter</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- ===== MEMORIES & QUIZ SECTION ===== -->
+    <section id="gallery" class="section gallery-section">
+        <div class="section-header">
+            <span class="section-emoji">📸</span>
+            <h2>Our Precious Memories</h2>
+            <p class="section-subtitle">Answer our special milestone quiz to unlock our magical memory vault ✨</p>
+        </div>
+
+        <!-- Interactive Love Quiz -->
+        <div class="quiz-wrapper" id="quizWrapper">
+            <div class="quiz-card" id="quizCard">
+                <div class="quiz-badge" id="quizBadge">Milestone 1 of 6 💕</div>
+                <div class="quiz-progress-bar">
+                    <div class="quiz-progress-fill" id="quizProgressFill"></div>
+                </div>
+                <h3 class="quiz-question" id="quizQuestion">What is our relationship number? 💕</h3>
+                <p class="quiz-hint" id="quizHint">Our special secret number...</p>
+
+                <form id="quizForm" class="quiz-input-group">
+                    <input type="text" id="quizInput" class="quiz-input" placeholder="Enter answer..." autocomplete="off" required>
+                    <button type="submit" class="quiz-btn">Check Answer ✨</button>
+                </form>
+
+                <div class="quiz-feedback" id="quizFeedback"></div>
+            </div>
+        </div>
+
+        <!-- Unlocked Media Section (Shown after completing quiz) -->
+        <div id="unlockedMediaSection" style="display: none;">
+            <div class="section-header" style="margin-bottom: 30px;">
+                <span class="section-emoji">💖✨</span>
+                <h2>You Unlocked Our Love Story!</h2>
+                <p class="section-subtitle">Playing "Perfect" by Ed Sheeran for the most perfect person in my life 🎶💕</p>
+            </div>
+
+            <!-- Beat-Synced Slideshow Showcase -->
+            <div class="slideshow-wrapper" id="slideshowWrapper">
+                <button class="slideshow-nav-btn prev" id="slideshowPrev" title="Previous Slide">❮</button>
+                <div class="slideshow-viewport" id="slideshowViewport"></div>
+                <button class="slideshow-nav-btn next" id="slideshowNext" title="Next Slide">❯</button>
+            </div>
+
+            <!-- Gallery Grid with All Photos and Videos -->
+            <div class="section-header" style="margin-top: 40px; margin-bottom: 20px;">
+                <h3 style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--pink-deep);">Every Moment Together 📸</h3>
+                <p class="section-subtitle">Click any photo or video below to view in full crystal-clear quality 💕</p>
+            </div>
+
+            <div class="unlocked-grid" id="unlockedGrid"></div>
+
+            <!-- Page Navigation to Next Page -->
+            <div class="page-navigation" style="margin-top: 60px;">
+                <a href="reasons.html" class="page-nav-btn secondary">← Back: Why I Love You</a>
+                <a href="letter.html" class="page-nav-btn primary pulse-glow">Read My Love Letter To You 💌 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Music Player Pill -->
+    <div class="music-player-pill" id="musicPlayerPill" style="display: none;" title="Click to Play/Pause Music">
+        <div class="music-bars" id="musicBars">
+            <div class="music-bar"></div>
+            <div class="music-bar"></div>
+            <div class="music-bar"></div>
+            <div class="music-bar"></div>
+        </div>
+        <div class="music-info">
+            <span class="music-title" id="musicTitle">🎵 Ed Sheeran - Perfect</span>
+            <span class="music-time" id="musicTime">0:00 / 1:35</span>
+        </div>
+    </div>
+
+    <!-- Fullscreen Lightbox Modal -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <button class="lightbox-close" id="lightboxClose" title="Close (Esc)">&times;</button>
+        <button class="lightbox-prev" id="lightboxPrev" title="Previous (Left Arrow)">&#10094;</button>
+        <button class="lightbox-next" id="lightboxNext" title="Next (Right Arrow)">&#10095;</button>
+        <div class="lightbox-content" id="lightboxContent"></div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-hearts">💕💖💕</div>
+            <p class="footer-message">Made with endless love, just for you</p>
+            <p class="footer-sub">Happy Birthday, Cutieee!! 😚🎂</p>
+            <div class="footer-stars">⭐ You're my favorite person ⭐</div>
+        </div>
+    </footer>
+
+    <!-- Birthday Confetti Canvas -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <script src="script.js"></script>
+    <script src="gallery.js"></script>
+</body>
+</html>
