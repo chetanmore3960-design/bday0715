@@ -48,7 +48,7 @@ const questions = [
         badge: 'Milestone 1 of 6 💕',
         title: 'What is our relationship number? 💕',
         hint: 'Our special secret number...',
-        placeholder: '----',
+        placeholder: 'Enter number...',
         validate: (ans) => {
             const clean = ans.replace(/\D/g, '');
             return clean === '0715' || clean === '715';
@@ -57,7 +57,7 @@ const questions = [
     {
         badge: 'Milestone 2 of 6 💌',
         title: 'When did I send you a request? 💌',
-        hint: 'Date format: DD/MM/YYYY (e.g. DD/MM/YYYY)',
+        hint: 'When a simple message changed everything...',
         placeholder: 'DD/MM/YYYY',
         validate: (ans) => {
             const d = normalizeDate(ans);
@@ -77,7 +77,7 @@ const questions = [
     {
         badge: 'Milestone 4 of 6 💋',
         title: 'The date of our unforgettable first kiss 💋',
-        hint: 'That magical moment in 2024...',
+        hint: 'That magical moment we shared together...',
         placeholder: 'DD/MM/YYYY',
         validate: (ans) => {
             const d = normalizeDate(ans);
@@ -87,7 +87,7 @@ const questions = [
     {
         badge: 'Milestone 5 of 6 💖',
         title: 'Our first intimate date together 💖',
-        hint: 'Our most special, sacred milestone in 2026...',
+        hint: 'Our most special, sacred milestone together...',
         placeholder: 'DD/MM/YYYY',
         validate: (ans) => {
             const d = normalizeDate(ans);
@@ -97,8 +97,8 @@ const questions = [
     {
         badge: 'Milestone 6 of 6 ✨',
         title: 'Our favourite and best memory together ✨',
-        hint: 'That unforgettable memory we took together...',
-        placeholder: 'e.g. 2026 -----',
+        hint: 'That dream journey we took together...',
+        placeholder: 'Enter memory...',
         validate: (ans) => {
             const clean = ans.toLowerCase().replace(/[^a-z0-9]/g, '');
             return clean.includes('2026yatra') || clean.includes('yatra2026') || clean.includes('yatra');
