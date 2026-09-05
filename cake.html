@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cut The Birthday Cake 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Floating Hearts Background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">💕</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="cake.html" class="active">Cake</a></li>
+            <li><a href="wishes.html">Wishes</a></li>
+            <li><a href="reasons.html">Why I Love You</a></li>
+            <li><a href="gallery.html">Memories</a></li>
+            <li><a href="letter.html">Love Letter</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- ===== CAKE CUTTING SECTION ===== -->
+    <section class="section cake-section">
+        <div class="section-header" style="margin-bottom: 20px;">
+            <span class="section-emoji">🎂✨</span>
+            <h2>Make A Wish, My Love!</h2>
+            <p class="section-subtitle">Click the cake or the button below to blow out your candles and cut your cake 💕</p>
+        </div>
+
+        <!-- Interactive Cake Stage -->
+        <div class="cake-stage" id="cakeStage" title="Click to cut the cake!">
+            <div class="knife-cursor" id="knifeCursor">🔪✨</div>
+            <div class="cake-cut-line" id="cakeCutLine"></div>
+
+            <div class="cake-stand">
+                <!-- Top Tier -->
+                <div class="cake-tier top">
+                    <div class="candles-row">
+                        <div class="candle"><div class="flame"></div></div>
+                        <div class="candle"><div class="flame"></div></div>
+                        <div class="candle"><div class="flame"></div></div>
+                    </div>
+                    <div class="cake-toppers">
+                        <span>🍓</span>
+                        <span>✨</span>
+                        <span>🍓</span>
+                    </div>
+                    <div class="icing-drip"></div>
+                </div>
+
+                <!-- Middle Tier -->
+                <div class="cake-tier middle">
+                    <div class="icing-drip"></div>
+                </div>
+
+                <!-- Bottom Tier -->
+                <div class="cake-tier bottom">
+                    <div class="icing-drip"></div>
+                </div>
+            </div>
+
+            <!-- Plate -->
+            <div class="cake-plate"></div>
+        </div>
+
+        <!-- Action Button -->
+        <button class="cut-btn" id="cutCakeBtn">
+            <span>Cut The Cake</span>
+            <span>🎂🔪✨</span>
+        </button>
+
+        <!-- Served Slice Graphic -->
+        <div class="served-slice-container" id="servedSliceContainer">
+            <div class="slice-graphic">🍰✨</div>
+            <p style="font-size: 1.15rem; color: var(--pink-deep); font-weight: 600; margin-top: 10px;">
+                A sweet slice of happiness for the sweetest person in my life! 🥰
+            </p>
+        </div>
+
+        <!-- Romantic Note Card -->
+        <div class="cute-note-wrapper" id="cuteNoteWrapper">
+            <div class="cute-note-card">
+                <div class="cute-note-seal">A SWEET NOTE FOR YOU 💌</div>
+                <h3 class="cute-note-title">To My Sweetest Avantika 💖</h3>
+                <div class="cute-note-text">
+                    <p>To the girl who brings more sweetness, warmth, and joy into my life than any birthday cake ever could... 🍰✨</p>
+                    <p>Today is the day the world was blessed with you, and my heart was blessed forever. Make the biggest, brightest wish in your heart today—and I promise to spend this year doing everything I can to help make every single one of your dreams come true.</p>
+                    <p>Take the sweetest bite, smile that breathtaking smile of yours, and never forget how endlessly loved, cherished, and precious you are to me.</p>
+                </div>
+                <div class="cute-note-signature">Forever & Always Yours 💕</div>
+            </div>
+        </div>
+
+        <!-- Page Navigation Buttons -->
+        <div class="page-navigation" style="margin-top: 40px;">
+            <a href="index.html" class="page-nav-btn secondary">← Back to Home</a>
+            <a href="wishes.html" class="page-nav-btn primary pulse-glow">Your Birthday Wishes 🎁 →</a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-hearts">💕💖💕</div>
+            <p class="footer-message">Made with endless love, just for you</p>
+            <p class="footer-sub">Happy Birthday, Beautiful! 🎂✨</p>
+            <div class="footer-stars">⭐ You're my favorite person ⭐</div>
+        </div>
+    </footer>
+
+    <!-- Birthday Confetti Canvas -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <script src="script.js"></script>
+    <script src="cake.js"></script>
+</body>
+</html>

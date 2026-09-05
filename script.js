@@ -232,7 +232,8 @@ function initPasswordProtection() {
 
                 setTimeout(() => {
                     overlay.classList.add('unlocked');
-                }, 700);
+                    window.location.href = 'cake.html';
+                }, 850);
             } else {
                 card.classList.add('shake-anim');
                 setTimeout(() => card.classList.remove('shake-anim'), 600);
