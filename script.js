@@ -257,8 +257,166 @@ function initPasswordProtection() {
 }
 
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPasswordProtection);
+    document.addEventListener('DOMContentLoaded', () => {
+        initPasswordProtection();
+        initBackgroundMusic();
+    });
 } else {
     initPasswordProtection();
+    initBackgroundMusic();
 }
+
+// ===== BACKGROUND MUSIC MANAGER ("Tum mere ho bdayy.mpeg") =====
+let bgAudio = null;
+
+function initBackgroundMusic() {
+    const path = window.location.pathname.toLowerCase();
+    const isGallery = path.includes('gallery.html');
+
+    // On gallery page, DO NOT play Tum Mere Ho (Ed Sheeran plays on gallery instead)
+    if (isGallery) {
+        if (bgAudio) {
+            bgAudio.pause();
+        }
+        return;
+    }
+
+    const isMusicActive = sessionStorage.getItem('bg_music_active') === 'true';
+    if (!isMusicActive) {
+        return;
+    }
+
+    if (!bgAudio) {
+        bgAudio = new Audio('Tum%20mere%20ho%20bdayy.mpeg');
+        bgAudio.loop = true;
+        window.bgAudio = bgAudio;
+    }
+
+    // Restore saved playback position
+    const savedTime = parseFloat(sessionStorage.getItem('bg_music_time') || '0');
+    if (savedTime && !isNaN(savedTime)) {
+        bgAudio.currentTime = savedTime;
+    }
+
+    // Periodically record playback time so navigation resumes seamlessly
+    bgAudio.addEventListener('timeupdate', () => {
+        sessionStorage.setItem('bg_music_time', bgAudio.currentTime.toString());
+        updateBgMusicUI();
+    });
+
+    window.addEventListener('beforeunload', () => {
+        if (bgAudio) {
+            sessionStorage.setItem('bg_music_time', bgAudio.currentTime.toString());
+        }
+    });
+
+    createBgMusicPill();
+
+    const userPaused = sessionStorage.getItem('bg_music_user_paused') === 'true';
+    if (!userPaused) {
+        playBgMusic();
+    } else {
+        updateBgMusicUI();
+    }
+}
+
+function playBgMusic() {
+    const path = window.location.pathname.toLowerCase();
+    if (path.includes('gallery.html')) return; // Do not play on gallery
+
+    if (!bgAudio) {
+        bgAudio = new Audio('Tum%20mere%20ho%20bdayy.mpeg');
+        bgAudio.loop = true;
+        window.bgAudio = bgAudio;
+    }
+    sessionStorage.setItem('bg_music_active', 'true');
+    sessionStorage.setItem('bg_music_user_paused', 'false');
+
+    createBgMusicPill();
+
+    const playPromise = bgAudio.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            updateBgMusicUI();
+        }).catch(() => {
+            // Autoplay policy prevented immediate playback: play on first user interaction
+            const resumeOnInteraction = () => {
+                if (bgAudio) {
+                    bgAudio.play().then(() => {
+                        updateBgMusicUI();
+                    }).catch(() => {});
+                }
+                document.removeEventListener('click', resumeOnInteraction);
+                document.removeEventListener('touchstart', resumeOnInteraction);
+            };
+            document.addEventListener('click', resumeOnInteraction, { once: true });
+            document.addEventListener('touchstart', resumeOnInteraction, { once: true });
+        });
+    }
+    updateBgMusicUI();
+}
+
+function pauseBgMusic() {
+    if (bgAudio) {
+        bgAudio.pause();
+        sessionStorage.setItem('bg_music_user_paused', 'true');
+        updateBgMusicUI();
+    }
+}
+
+function toggleBgMusic() {
+    if (!bgAudio || bgAudio.paused) {
+        playBgMusic();
+    } else {
+        pauseBgMusic();
+    }
+}
+
+function createBgMusicPill() {
+    const path = window.location.pathname.toLowerCase();
+    if (path.includes('gallery.html')) return; // Gallery has its own player pill for Perfect
+
+    if (document.getElementById('bgMusicPill')) return;
+
+    const pill = document.createElement('div');
+    pill.id = 'bgMusicPill';
+    pill.className = 'music-player-pill';
+    pill.title = 'Click to Play/Pause Birthday Song 💕';
+    pill.innerHTML = `
+        <div class="music-bars" id="bgMusicBars">
+            <div class="music-bar"></div>
+            <div class="music-bar"></div>
+            <div class="music-bar"></div>
+            <div class="music-bar"></div>
+        </div>
+        <div class="music-info">
+            <span class="music-title">🎵 Tum Mere Ho ❤️</span>
+            <span class="music-time" id="bgMusicTime">0:00</span>
+        </div>
+    `;
+
+    pill.addEventListener('click', toggleBgMusic);
+    document.body.appendChild(pill);
+}
+
+function updateBgMusicUI() {
+    const bars = document.getElementById('bgMusicBars');
+    const timeEl = document.getElementById('bgMusicTime');
+    if (!bars || !timeEl || !bgAudio) return;
+
+    if (!bgAudio.paused) {
+        bars.classList.add('playing');
+        const cur = Math.floor(bgAudio.currentTime);
+        const m = Math.floor(cur / 60);
+        const s = cur % 60;
+        timeEl.textContent = `${m}:${s < 10 ? '0' + s : s}`;
+    } else {
+        bars.classList.remove('playing');
+        timeEl.textContent = 'Paused ⏸️';
+    }
+}
+
+window.playBgMusic = playBgMusic;
+window.pauseBgMusic = pauseBgMusic;
+window.toggleBgMusic = toggleBgMusic;
 

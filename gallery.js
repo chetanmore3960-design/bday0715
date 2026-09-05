@@ -227,7 +227,11 @@ function unlockMemories() {
     const unlockedSec = document.getElementById('unlockedMediaSection');
     unlockedSec.style.display = 'block';
 
-    // Start background music (0:00 to 1:35)
+    // Pause Tum Mere Ho bday song when memories start
+    if (typeof pauseBgMusic === 'function') pauseBgMusic();
+    if (window.bgAudio) window.bgAudio.pause();
+
+    // Start background memories music (0:00 to 1:35)
     audio.currentTime = 0;
     audio.play().then(() => {
         updateMusicUI();
@@ -442,6 +446,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'Escape') closeLightbox();
             if (e.key === 'ArrowRight') nextLightbox();
             if (e.key === 'ArrowLeft') prevLightbox();
+        }
+    });
+
+    // Pause memories music when leaving gallery page
+    window.addEventListener('beforeunload', () => {
+        if (audio) {
+            audio.pause();
         }
     });
 });

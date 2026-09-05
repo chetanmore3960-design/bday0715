@@ -1,4 +1,4 @@
-﻿// ===== INTERACTIVE CAKE CUTTING SCRIPT =====
+// ===== INTERACTIVE CAKE CUTTING SCRIPT =====
 let isCakeCut = false;
 
 function cutCake() {
@@ -19,10 +19,13 @@ function cutCake() {
     const cutLine = document.getElementById('cakeCutLine');
     if (cutLine) cutLine.classList.add('sliced');
 
-    // 4. Trigger celebration Confetti
+    // 4. Trigger celebration Confetti & Play Tum Mere Ho Bday Song
     if (typeof triggerConfetti === 'function') {
         triggerConfetti();
         setTimeout(triggerConfetti, 800);
+    }
+    if (typeof playBgMusic === 'function') {
+        playBgMusic();
     }
 
     // 5. Reveal served cake slice & sweet message
