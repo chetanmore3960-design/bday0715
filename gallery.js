@@ -113,6 +113,7 @@ let isUnlocked = false;
 const audio = new Audio('Edd_Sheeran_-_Perfect_(mp3.pm).mp3');
 const MAX_AUDIO_TIME = 95; // 1:35 = 95 seconds
 audio.currentTime = 0;
+window.galleryAudio = audio;
 
 audio.addEventListener('timeupdate', () => {
     if (audio.currentTime >= MAX_AUDIO_TIME) {
@@ -156,8 +157,11 @@ function toggleMusic() {
 
 // Initialize Quiz UI
 function renderQuestion() {
+    const badge = document.getElementById('quizBadge');
+    if (!badge) return;
+
     const q = questions[currentQuestionIndex];
-    document.getElementById('quizBadge').textContent = q.badge;
+    badge.textContent = q.badge;
     document.getElementById('quizQuestion').textContent = q.title;
     document.getElementById('quizHint').textContent = q.hint;
     const input = document.getElementById('quizInput');
@@ -415,44 +419,76 @@ function prevLightbox() {
 }
 
 // Event Listeners
-document.addEventListener('DOMContentLoaded', () => {
+function initGalleryPage() {
+    if (!document.getElementById('quizForm')) return;
+
+    currentQuestionIndex = 0;
+    isUnlocked = false;
+    activeLightboxIndex = 0;
+
     renderQuestion();
 
-    document.getElementById('quizForm')?.addEventListener('submit', handleQuizSubmit);
-    document.getElementById('musicPlayerPill')?.addEventListener('click', toggleMusic);
+    const quizForm = document.getElementById('quizForm');
+    if (quizForm) quizForm.onsubmit = handleQuizSubmit;
 
-    document.getElementById('slideshowNext')?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        nextSlide();
-        startSlideshowTimer();
-    });
-    document.getElementById('slideshowPrev')?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        prevSlide();
-        startSlideshowTimer();
-    });
+    const musicPill = document.getElementById('musicPlayerPill');
+    if (musicPill) musicPill.onclick = toggleMusic;
 
-    document.getElementById('lightboxClose')?.addEventListener('click', closeLightbox);
-    document.getElementById('lightboxNext')?.addEventListener('click', (e) => { e.stopPropagation(); nextLightbox(); });
-    document.getElementById('lightboxPrev')?.addEventListener('click', (e) => { e.stopPropagation(); prevLightbox(); });
-    document.getElementById('lightboxModal')?.addEventListener('click', (e) => {
-        if (e.target.id === 'lightboxModal') closeLightbox();
-    });
+    const nextBtn = document.getElementById('slideshowNext');
+    if (nextBtn) {
+        nextBtn.onclick = (e) => {
+            e.stopPropagation();
+            nextSlide();
+            startSlideshowTimer();
+        };
+    }
+    const prevBtn = document.getElementById('slideshowPrev');
+    if (prevBtn) {
+        prevBtn.onclick = (e) => {
+            e.stopPropagation();
+            prevSlide();
+            startSlideshowTimer();
+        };
+    }
+
+    const closeBtn = document.getElementById('lightboxClose');
+    if (closeBtn) closeBtn.onclick = closeLightbox;
+
+    const lbNext = document.getElementById('lightboxNext');
+    if (lbNext) lbNext.onclick = (e) => { e.stopPropagation(); nextLightbox(); };
+
+    const lbPrev = document.getElementById('lightboxPrev');
+    if (lbPrev) lbPrev.onclick = (e) => { e.stopPropagation(); prevLightbox(); };
+
+    const modal = document.getElementById('lightboxModal');
+    if (modal) {
+        modal.onclick = (e) => {
+            if (e.target.id === 'lightboxModal') closeLightbox();
+        };
+    }
 
     // Keyboard support for lightbox
-    document.addEventListener('keydown', (e) => {
-        const modal = document.getElementById('lightboxModal');
-        if (modal && modal.classList.contains('active')) {
+    document.onkeydown = (e) => {
+        const m = document.getElementById('lightboxModal');
+        if (m && m.classList.contains('active')) {
             if (e.key === 'Escape') closeLightbox();
             if (e.key === 'ArrowRight') nextLightbox();
             if (e.key === 'ArrowLeft') prevLightbox();
         }
-    });
+    };
+}
 
-    // Pause memories music when leaving gallery page
-    window.addEventListener('beforeunload', () => {
-        if (audio) {
-            audio.pause();
-        }
-    });
+window.initGalleryPage = initGalleryPage;
+
+// Pause memories music when leaving gallery page
+window.addEventListener('beforeunload', () => {
+    if (audio) {
+        audio.pause();
+    }
 });
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGalleryPage);
+} else {
+    initGalleryPage();
+}

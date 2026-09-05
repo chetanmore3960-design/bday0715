@@ -242,7 +242,11 @@ function initPasswordProtection() {
 
                 setTimeout(() => {
                     overlay.classList.add('unlocked');
-                    window.location.href = 'cake.html';
+                    if (typeof loadPageSeamlessly === 'function') {
+                        loadPageSeamlessly('cake.html');
+                    } else {
+                        window.location.href = 'cake.html';
+                    }
                 }, 850);
             } else {
                 card.classList.add('shake-anim');
@@ -260,27 +264,20 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         initPasswordProtection();
         initBackgroundMusic();
+        setupSeamlessNavigation();
+        initLetterPage();
     });
 } else {
     initPasswordProtection();
     initBackgroundMusic();
+    setupSeamlessNavigation();
+    initLetterPage();
 }
 
 // ===== BACKGROUND MUSIC MANAGER ("Tum mere ho bdayy.mpeg") =====
 let bgAudio = null;
 
 function initBackgroundMusic() {
-    const path = window.location.pathname.toLowerCase();
-    const isGallery = path.includes('gallery.html');
-
-    // On gallery page, DO NOT play Tum Mere Ho (Ed Sheeran plays on gallery instead)
-    if (isGallery) {
-        if (bgAudio) {
-            bgAudio.pause();
-        }
-        return;
-    }
-
     const isMusicActive = sessionStorage.getItem('bg_music_active') === 'true';
     if (!isMusicActive) {
         return;
@@ -321,8 +318,10 @@ function initBackgroundMusic() {
 }
 
 function playBgMusic() {
-    const path = window.location.pathname.toLowerCase();
-    if (path.includes('gallery.html')) return; // Do not play on gallery
+    // If memories audio is currently playing, don't play Tum Mere Ho
+    if (window.galleryAudio && !window.galleryAudio.paused) {
+        return;
+    }
 
     if (!bgAudio) {
         bgAudio = new Audio('Tum%20mere%20ho%20bdayy.mpeg');
@@ -339,9 +338,8 @@ function playBgMusic() {
         playPromise.then(() => {
             updateBgMusicUI();
         }).catch(() => {
-            // Autoplay policy prevented immediate playback: play on first user interaction
             const resumeOnInteraction = () => {
-                if (bgAudio) {
+                if (bgAudio && (!window.galleryAudio || window.galleryAudio.paused)) {
                     bgAudio.play().then(() => {
                         updateBgMusicUI();
                     }).catch(() => {});
@@ -373,9 +371,6 @@ function toggleBgMusic() {
 }
 
 function createBgMusicPill() {
-    const path = window.location.pathname.toLowerCase();
-    if (path.includes('gallery.html')) return; // Gallery has its own player pill for Perfect
-
     if (document.getElementById('bgMusicPill')) return;
 
     const pill = document.createElement('div');
@@ -419,4 +414,191 @@ function updateBgMusicUI() {
 window.playBgMusic = playBgMusic;
 window.pauseBgMusic = pauseBgMusic;
 window.toggleBgMusic = toggleBgMusic;
+
+
+// ===== SEAMLESS SPA NAVIGATION (ZERO AUDIO BREAKS ON PAGE CHANGES) =====
+function setupSeamlessNavigation() {
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        // Skip non-page links
+        if (href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || link.target === '_blank') {
+            return;
+        }
+
+        const validPages = ['index.html', 'cake.html', 'wishes.html', 'reasons.html', 'gallery.html', 'letter.html'];
+        const targetFilename = href.split('?')[0].split('#')[0];
+        if (!validPages.includes(targetFilename)) {
+            return;
+        }
+
+        e.preventDefault();
+        loadPageSeamlessly(href);
+    });
+
+    window.addEventListener('popstate', (e) => {
+        const page = (e.state && e.state.page) || window.location.pathname.split('/').pop() || 'index.html';
+        loadPageSeamlessly(page, false);
+    });
+}
+
+function loadPageSeamlessly(url, pushState = true) {
+    fetch(url)
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.text();
+        })
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            document.title = doc.title;
+
+            // Handle Lightbox Modal & Gallery Player Pill
+            const isTargetGallery = url.includes('gallery.html');
+            const currentLightbox = document.getElementById('lightboxModal');
+            const newLightbox = doc.getElementById('lightboxModal');
+            if (newLightbox && !currentLightbox) {
+                document.body.appendChild(newLightbox);
+            } else if (!newLightbox && currentLightbox) {
+                currentLightbox.remove();
+            }
+
+            const currentGalleryPill = document.getElementById('musicPlayerPill');
+            const newGalleryPill = doc.getElementById('musicPlayerPill');
+            if (newGalleryPill && !currentGalleryPill) {
+                document.body.appendChild(newGalleryPill);
+            } else if (!newGalleryPill && currentGalleryPill) {
+                currentGalleryPill.remove();
+            }
+
+            // Handle Password Overlay (on index.html)
+            const currentOverlay = document.getElementById('passwordOverlay');
+            const newOverlay = doc.getElementById('passwordOverlay');
+            if (newOverlay && !currentOverlay) {
+                document.body.prepend(newOverlay);
+            } else if (!newOverlay && currentOverlay) {
+                currentOverlay.remove();
+            }
+
+            // Swap the main section with smooth transition
+            const currentSection = document.querySelector('.section');
+            const newSection = doc.querySelector('.section');
+
+            if (currentSection && newSection) {
+                currentSection.style.transition = 'opacity 0.15s ease';
+                currentSection.style.opacity = '0';
+
+                setTimeout(() => {
+                    currentSection.replaceWith(newSection);
+                    newSection.style.opacity = '0';
+                    newSection.style.transition = 'opacity 0.25s ease';
+                    requestAnimationFrame(() => {
+                        newSection.style.opacity = '1';
+                    });
+
+                    // Scroll to top
+                    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+                    // Re-initialize features for this page
+                    finishPageTransition(url);
+                }, 150);
+            } else {
+                finishPageTransition(url);
+            }
+
+            if (pushState) {
+                window.history.pushState({ page: url }, '', url);
+            }
+
+            updateNavbarActive(url);
+        })
+        .catch(err => {
+            console.log('Falling back to normal navigation:', err);
+            window.location.href = url;
+        });
+}
+
+function updateNavbarActive(url) {
+    const pageName = url.split('/').pop().split('?')[0].split('#')[0] || 'index.html';
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        const href = a.getAttribute('href');
+        if (href === pageName || (pageName === '' && href === 'index.html')) {
+            a.classList.add('active');
+        } else {
+            a.classList.remove('active');
+        }
+    });
+
+    // Close mobile nav drawer if open
+    const navLinks = document.querySelector('.nav-links');
+    const hamburger = document.getElementById('hamburger');
+    if (navLinks) navLinks.classList.remove('active');
+    if (hamburger) hamburger.classList.remove('active');
+}
+
+function finishPageTransition(url) {
+    const target = url.split('/').pop().split('?')[0].split('#')[0] || 'index.html';
+
+    // Page-specific initializers
+    if (target === 'cake.html') {
+        if (window.initCakePage) {
+            window.initCakePage();
+        }
+    } else if (target === 'gallery.html') {
+        if (window.initGalleryPage) {
+            window.initGalleryPage();
+        }
+    } else if (target === 'letter.html') {
+        initLetterPage();
+        // If memories audio was playing, pause it and resume Tum Mere Ho
+        if (window.galleryAudio) {
+            window.galleryAudio.pause();
+            window.galleryAudio.currentTime = 0;
+        }
+        if (sessionStorage.getItem('bg_music_active') === 'true') {
+            playBgMusic();
+        }
+    } else if (target === 'index.html') {
+        initPasswordProtection();
+    }
+
+    // Scroll & entrance animations on wish & reason cards
+    document.querySelectorAll('.wish-card, .reason-item').forEach((el, index) => {
+        setTimeout(() => {
+            el.classList.add('visible');
+        }, index * 100);
+    });
+
+    // Keep background music playing seamlessly
+    if (sessionStorage.getItem('bg_music_active') === 'true') {
+        createBgMusicPill();
+        updateBgMusicUI();
+        if (!bgAudio || bgAudio.paused) {
+            // Only resume if not currently playing gallery audio
+            if (!window.galleryAudio || window.galleryAudio.paused) {
+                playBgMusic();
+            }
+        }
+    }
+}
+
+function initLetterPage() {
+    const envelope = document.getElementById('envelope');
+    const letterContent = document.getElementById('letterContent');
+    if (envelope && letterContent) {
+        envelope.onclick = () => {
+            envelope.classList.add('opened');
+            letterContent.classList.add('visible');
+            if (typeof triggerConfetti === 'function') triggerConfetti();
+        };
+    }
+}
+
+window.loadPageSeamlessly = loadPageSeamlessly;
+window.initLetterPage = initLetterPage;
 

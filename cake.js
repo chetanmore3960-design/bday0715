@@ -51,23 +51,33 @@ function cutCake() {
     }, 900);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initCakePage() {
+    isCakeCut = false;
     const cutBtn = document.getElementById('cutCakeBtn');
     const cakeStage = document.getElementById('cakeStage');
 
-    if (cutBtn) cutBtn.addEventListener('click', cutCake);
-    if (cakeStage) cakeStage.addEventListener('click', cutCake);
+    if (cutBtn) cutBtn.onclick = cutCake;
+    if (cakeStage) cakeStage.onclick = cutCake;
 
     // Swipe/Touch gesture support on mobile
     let touchStartY = 0;
-    cakeStage?.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY;
-    }, { passive: true });
+    if (cakeStage) {
+        cakeStage.ontouchstart = (e) => {
+            touchStartY = e.touches[0].clientY;
+        };
+        cakeStage.ontouchend = (e) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            if (Math.abs(touchEndY - touchStartY) > 30 || Math.abs(touchEndY - touchStartY) < 10) {
+                cutCake();
+            }
+        };
+    }
+}
 
-    cakeStage?.addEventListener('touchend', (e) => {
-        const touchEndY = e.changedTouches[0].clientY;
-        if (Math.abs(touchEndY - touchStartY) > 30 || Math.abs(touchEndY - touchStartY) < 10) {
-            cutCake();
-        }
-    }, { passive: true });
-});
+window.initCakePage = initCakePage;
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCakePage);
+} else {
+    initCakePage();
+}
