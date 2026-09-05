@@ -34,6 +34,8 @@
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 70px;
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 body {
@@ -41,6 +43,7 @@ body {
     color: var(--text-dark);
     background: var(--gradient-main);
     overflow-x: hidden;
+    max-width: 100%;
     line-height: 1.6;
 }
 
@@ -156,7 +159,20 @@ body {
     height: 3px;
     background: var(--pink-deep);
     border-radius: 3px;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+    transform: scale(0);
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
 }
 
 /* ===== SECTIONS GENERAL ===== */
@@ -863,10 +879,12 @@ body {
     }
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-    .section {
-        padding: 80px 20px 40px;
+/* ===== RESPONSIVE AUDIT & OVERHAUL ===== */
+
+/* Tablets & Smaller Desktops (<= 880px) */
+@media (max-width: 880px) {
+    .navbar {
+        padding: 12px 25px;
     }
 
     .hamburger {
@@ -881,92 +899,132 @@ body {
         right: 0;
         flex-direction: column;
         background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(20px);
-        padding: 20px;
-        gap: 5px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        padding: 15px 20px;
+        gap: 6px;
+        box-shadow: 0 15px 35px rgba(255, 107, 138, 0.15);
+        max-height: calc(100vh - 75px);
+        overflow-y: auto;
+        border-bottom: 2px solid rgba(255, 192, 203, 0.3);
     }
 
     .nav-links.active {
         display: flex;
+        animation: fadeInDown 0.3s ease-out;
     }
 
     .nav-links a {
         text-align: center;
-        padding: 12px;
-    }
-
-    .title-line:nth-child(1) {
-        font-size: 1.3rem;
-        letter-spacing: 5px;
-    }
-
-    .title-line.highlight {
-        font-size: 3.5rem;
-    }
-
-    .title-line.cursive {
-        font-size: 2.5rem;
-    }
-
-    .title-line.name-highlight {
-        font-size: 2.6rem;
-        letter-spacing: 7px;
-    }
-
-    .subtitle {
+        padding: 12px 18px;
         font-size: 1rem;
-        padding: 0 10px;
+        border-radius: 12px;
     }
 
-    .section-header h2 {
-        font-size: 2.2rem;
+    .section {
+        padding: 85px 20px 45px;
     }
 
+    /* Wishes Grid */
     .wishes-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
     }
 
+    /* Reasons Timeline: Clean Left-aligned Stream */
     .reasons-timeline::before {
         left: 20px;
     }
 
     .reason-item,
     .reason-item.right {
-        justify-content: flex-end;
+        justify-content: flex-start;
+        padding-left: 48px;
+        margin-bottom: 35px;
+        transform: none !important;
+        opacity: 1 !important;
     }
 
     .reason-content {
-        width: 80%;
+        width: 100%;
+        max-width: 100%;
+        padding: 24px 20px;
     }
 
-    .gallery-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /* Floating Music Pill: Compact on Tablet/Mobile */
+    .music-player-pill {
+        bottom: 15px;
+        right: 15px;
+        padding: 8px 14px;
+        gap: 10px;
     }
 
-    .letter-paper {
-        padding: 30px 25px;
+    .music-title {
+        font-size: 0.8rem;
     }
 
-    .letter-greeting {
-        font-size: 1.8rem;
+    .music-time {
+        font-size: 0.7rem;
     }
 
-    .gallery-note {
-        display: block;
-        margin-left: 0;
-        transform: none;
-        border-radius: 15px;
+    .music-bars {
+        height: 14px;
     }
+
+    /* Lightbox Navigation */
+    .lightbox-prev { left: 12px; padding: 10px 14px; font-size: 1.5rem; }
+    .lightbox-next { right: 12px; padding: 10px 14px; font-size: 1.5rem; }
+    .lightbox-close { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 2rem; }
 }
 
+/* Mobile Devices (<= 480px) */
 @media (max-width: 480px) {
     .navbar {
-        padding: 12px 20px;
+        padding: 10px 18px;
+    }
+
+    .nav-brand {
+        font-size: 24px;
+    }
+
+    .section {
+        padding: 75px 15px 35px;
+    }
+
+    .section-header {
+        margin-bottom: 35px;
+    }
+
+    .section-emoji {
+        font-size: 2.4rem;
+        margin-bottom: 10px;
+    }
+
+    .section-header h2 {
+        font-size: 1.95rem;
+        line-height: 1.25;
+    }
+
+    .section-subtitle {
+        font-size: 0.95rem;
+        padding: 0 5px;
+    }
+
+    /* Hero Section */
+    .birthday-badge {
+        padding: 6px 18px;
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+    }
+
+    .title-line:nth-child(1) {
+        font-size: 1.15rem;
+        letter-spacing: 4px;
     }
 
     .title-line.highlight {
-        font-size: 2.8rem;
+        font-size: 2.7rem;
+        line-height: 1.15;
     }
 
     .title-line.cursive {
@@ -976,24 +1034,430 @@ body {
     .title-line.name-highlight {
         font-size: 1.9rem;
         letter-spacing: 5px;
+        margin: 8px 0 14px;
+    }
+
+    .subtitle {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        padding: 0 5px;
+        margin-bottom: 25px;
     }
 
     .cake-emoji {
         font-size: 3rem;
+        margin-bottom: 25px;
     }
 
     .cta-button {
-        padding: 14px 30px;
+        padding: 14px 28px;
+        font-size: 0.98rem;
+        width: 100%;
+        max-width: 290px;
+        justify-content: center;
+    }
+
+    /* Interactive Cake Section */
+    .cake-stage {
+        transform: scale(0.82);
+        transform-origin: bottom center;
+        margin: 5px auto 15px;
+    }
+
+    .cake-plate {
+        width: 300px;
+    }
+
+    .cut-btn {
+        padding: 14px 28px;
         font-size: 1rem;
+        width: 100%;
+        max-width: 290px;
+        justify-content: center;
+    }
+
+    .served-slice-container {
+        margin-top: 15px;
+    }
+
+    .slice-graphic {
+        font-size: 3rem;
+    }
+
+    .cute-note-wrapper {
+        margin: 25px auto 15px;
+        width: 100%;
+    }
+
+    .cute-note-card {
+        padding: 26px 16px;
+        border-radius: 18px;
+    }
+
+    .cute-note-seal {
+        font-size: 0.75rem;
+        padding: 4px 14px;
+        top: -14px;
+    }
+
+    .cute-note-title {
+        font-size: 1.65rem;
+        margin-top: 5px;
+        margin-bottom: 12px;
+    }
+
+    .cute-note-text {
+        font-size: 0.92rem;
+        line-height: 1.65;
+    }
+
+    .cute-note-signature {
+        font-size: 2rem;
+        margin-top: 10px;
+    }
+
+    /* Wishes Section */
+    .wishes-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .wish-card {
+        padding: 26px 18px;
+        border-radius: 16px;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .wish-icon {
+        font-size: 2.4rem;
+        margin-bottom: 12px;
+    }
+
+    .wish-card h3 {
+        font-size: 1.35rem;
+        margin-bottom: 8px;
+    }
+
+    .wish-card p {
+        font-size: 0.92rem;
+        line-height: 1.6;
+    }
+
+    /* Reasons Section */
+    .reasons-timeline {
+        padding: 10px 0;
+    }
+
+    .reasons-timeline::before {
+        left: 14px;
+    }
+
+    .reason-item,
+    .reason-item.right {
+        padding-left: 36px;
+        margin-bottom: 24px;
     }
 
     .reason-content {
-        width: 85%;
-        padding: 20px;
+        padding: 18px 15px;
+        border-radius: 16px;
     }
 
+    .reason-number {
+        font-size: 1.8rem;
+        margin-bottom: 4px;
+    }
+
+    .reason-content h3 {
+        font-size: 1.3rem;
+        margin-bottom: 6px;
+    }
+
+    .reason-content p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    /* Memory Quiz & Showcase */
+    .quiz-wrapper {
+        margin: 0 auto 30px;
+        width: 100%;
+    }
+
+    .quiz-card {
+        padding: 26px 16px;
+        border-radius: 20px;
+    }
+
+    .quiz-badge {
+        font-size: 0.82rem;
+        padding: 5px 14px;
+        margin-bottom: 15px;
+    }
+
+    .quiz-question {
+        font-size: 1.45rem;
+        line-height: 1.3;
+        margin-bottom: 8px;
+    }
+
+    .quiz-hint {
+        font-size: 0.88rem;
+        margin-bottom: 18px;
+    }
+
+    .quiz-input-group {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .quiz-input {
+        min-width: 100%;
+        width: 100%;
+        max-width: 100%;
+        font-size: 1rem;
+        padding: 12px 16px;
+    }
+
+    .quiz-btn {
+        width: 100%;
+        padding: 13px 20px;
+        font-size: 0.98rem;
+    }
+
+    .slideshow-wrapper {
+        max-width: 96vw;
+        margin: 0 auto 20px;
+        border-width: 3px;
+        border-radius: 16px;
+    }
+
+    .slideshow-item img,
+    .slideshow-item video {
+        max-width: 94vw;
+        max-height: 60vh;
+        border-radius: 13px;
+    }
+
+    .slideshow-overlay {
+        padding: 10px 14px;
+        font-size: 0.82rem;
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+        border-bottom-left-radius: 13px;
+        border-bottom-right-radius: 13px;
+    }
+
+    .slideshow-nav-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .slideshow-nav-btn.prev { left: 8px; }
+    .slideshow-nav-btn.next { right: 8px; }
+
+    /* Media Grid: 2 neat columns on phones */
+    .unlocked-grid {
+        column-count: 2;
+        column-gap: 10px;
+        margin-top: 20px;
+    }
+
+    .media-item-card {
+        margin-bottom: 10px;
+        border-radius: 12px;
+        border-width: 2px;
+    }
+
+    .media-card-badge {
+        font-size: 0.65rem;
+        padding: 3px 8px;
+        top: 6px;
+        right: 6px;
+    }
+
+    .video-play-hint {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+
+    /* Lightbox Modal on Phones */
+    .lightbox-content img,
+    .lightbox-content video {
+        max-width: 94vw;
+        max-height: 78vh;
+        border-radius: 12px;
+    }
+
+    .lightbox-close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 1.6rem;
+    }
+
+    .lightbox-prev {
+        left: 6px;
+        padding: 8px 10px;
+        font-size: 1.3rem;
+    }
+
+    .lightbox-next {
+        right: 6px;
+        padding: 8px 10px;
+        font-size: 1.3rem;
+    }
+
+    /* Love Letter */
     .envelope {
-        padding: 40px 20px;
+        padding: 35px 15px;
+        border-radius: 18px;
+        margin: 0 auto 20px;
+    }
+
+    .envelope-body p {
+        font-size: 1.35rem;
+    }
+
+    .letter-paper {
+        padding: 24px 16px;
+        border-radius: 16px;
+    }
+
+    .letter-date {
+        font-size: 0.82rem;
+        margin-bottom: 12px;
+    }
+
+    .letter-greeting {
+        font-size: 1.6rem;
+        margin-bottom: 14px;
+    }
+
+    .letter-body p {
+        font-size: 0.92rem;
+        line-height: 1.65;
+        margin-bottom: 14px;
+    }
+
+    .letter-signature p {
+        font-size: 0.92rem;
+    }
+
+    .signature {
+        font-size: 1.9rem;
+    }
+
+    /* Multi-Page Navigation Buttons: Stacked & Thumb-friendly */
+    .page-navigation {
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 35px;
+        margin-bottom: 85px;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .page-nav-btn {
+        width: 100%;
+        max-width: 290px;
+        justify-content: center;
+        padding: 13px 20px;
+        font-size: 0.95rem;
+    }
+
+    /* Password Lock Card */
+    .password-card {
+        padding: 28px 16px;
+        border-radius: 20px;
+        max-width: 320px;
+    }
+
+    .lock-icon {
+        font-size: 2.5rem;
+        margin-bottom: 8px;
+    }
+
+    .lock-title {
+        font-size: 1.7rem;
+        line-height: 1.2;
+    }
+
+    .lock-subtitle {
+        font-size: 0.88rem;
+        margin-bottom: 18px;
+    }
+
+    .lock-input {
+        width: 100%;
+        max-width: 100%;
+        font-size: 1rem;
+        padding: 12px 15px;
+        letter-spacing: 2px;
+    }
+
+    .lock-btn {
+        width: 100%;
+        padding: 13px 20px;
+        font-size: 0.98rem;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 40px 15px 30px;
+    }
+
+    .footer-hearts {
+        font-size: 1.5rem;
+    }
+
+    .footer-message {
+        font-size: 1.05rem;
+    }
+
+    .footer-sub {
+        font-size: 0.85rem;
+    }
+}
+
+/* Extra-Narrow Screens (<= 360px, Galaxy Z Fold Cover Screen) */
+@media (max-width: 360px) {
+    .section {
+        padding: 70px 10px 30px;
+    }
+
+    .section-header h2 {
+        font-size: 1.65rem;
+    }
+
+    .title-line.name-highlight {
+        font-size: 1.65rem;
+        letter-spacing: 3px;
+    }
+
+    .title-line.highlight {
+        font-size: 2.3rem;
+    }
+
+    .cake-stage {
+        transform: scale(0.72);
+        transform-origin: bottom center;
+        margin: 0 auto 10px;
+    }
+
+    .unlocked-grid {
+        column-count: 1;
+    }
+
+    .page-nav-btn {
+        font-size: 0.88rem;
+        padding: 11px 16px;
     }
 }
 
@@ -1386,10 +1850,11 @@ body {
 @media (max-width: 900px) {
     .unlocked-grid {
         column-count: 2;
+        column-gap: 12px;
     }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 360px) {
     .unlocked-grid {
         column-count: 1;
     }

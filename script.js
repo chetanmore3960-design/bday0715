@@ -42,6 +42,16 @@ if (hamburger && navLinks) {
             hamburger.classList.remove('active');
         });
     });
+
+    // Close mobile nav when tapping outside
+    document.addEventListener('click', (e) => {
+        if (navLinks.classList.contains('active')) {
+            if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        }
+    });
 }
 
 // Navbar scroll effect
